@@ -33,7 +33,7 @@ function requestApi(method, url) {
         output.results.forEach(function(item){
             let itemName = item.name || item.title;
             console.log(itemName);
-            inner += '<div class="col-3"> ' + itemName + ' </div>';
+            inner += `<div class="col-3">${itemName}</div>`;
         });
 
         movie.innerHTML = inner;
