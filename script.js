@@ -17,7 +17,33 @@ function requestApi(url) {
     request.responseType = 'json';
     request.send();
 
-    request.addEventListener('readystatechange', () => {
+    // request.addEventListener('readystatechange', () => {
+    //     if (request.readyState !== 4) {
+    //         movie.innerHTML = 'Loading...';
+    //         return;
+    //     }
+        
+    //     if (request.status !== 200) {
+    //         movie.innerHTML = 'OOPS... Something went wrong...';
+    //         console.log('Error: ' + request.status);
+    //         return;
+    //     }
+
+    //     const output = request.response;
+
+    //     let inner = '';
+
+    //     output.results.forEach(function(item){
+    //         let itemName = item.name || item.title;
+    //         console.log(itemName);
+    //         inner += `<div class="col-3">${itemName}</div>`;
+    //     });
+
+    //     movie.innerHTML = inner;
+    // });
+
+    request.onload =  () => {
+        
         if (request.readyState !== 4) {
             movie.innerHTML = 'Loading...';
             return;
@@ -40,5 +66,5 @@ function requestApi(url) {
         });
 
         movie.innerHTML = inner;
-    });
+    };
 }
