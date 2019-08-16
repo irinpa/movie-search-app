@@ -1,24 +1,20 @@
 const searchForm = document.querySelector('#search-form');
 const movie = document.querySelector('#movies');
 
-// function apiSearch(evt) {
-//     evt.preventDefault();
-//     const searchText = document.querySelector('.form-control').value;
-//     const server = 'https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText;
-//     requestApi('GET', server);
-// }
-
-searchForm.addEventListener('submit', function(evt) {
+function apiSearch(evt) {
     evt.preventDefault();
     const searchText = document.querySelector('.form-control').value;
     const server = 'https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText;
     requestApi(server);
-});
+}
+
+searchForm.addEventListener('submit', apiSearch);
 
 function requestApi(url) {
     
     const request = new XMLHttpRequest();
     request.open('GET', url);
+    request.responseType = 'json';
     request.send();
 
     request.addEventListener('readystatechange', () => {
@@ -33,7 +29,7 @@ function requestApi(url) {
             return;
         }
 
-        const output = JSON.parse(request.responseText);
+        const output = request.response;
 
         let inner = '';
 
