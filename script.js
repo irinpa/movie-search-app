@@ -23,15 +23,17 @@ function requestApi(method, url) {
 
     request.addEventListener('readystatechange', () => {
         if (request.readyState !== 4) {
+            movie.innerHTML('Loading...');
             return;
         }
         
         if (request.status !== 200) {
+            movie.innerHTML('OOPS... Something went wrong...');
             console.log('Error: ' + request.status);
             return;
         }
 
-        const output = JSON.parse(request.responseText);
+        const output = JSON.parse(request.response);
 
         let inner = '';
 
