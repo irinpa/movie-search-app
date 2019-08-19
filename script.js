@@ -5,66 +5,55 @@ function apiSearch(evt) {
     evt.preventDefault();
     const searchText = document.querySelector('.form-control').value;
     const server = 'https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText;
-    requestApi(server);
+    movie.innerHTML = 'Loading...';
+    requestApi(server)
+        .then(function (result) {
+            const output = JSON.parse(result);
+            console.log(output);
+
+            let inner = '';
+
+            output.results.forEach(function (item) {
+                let itemName = item.name || item.title;
+                inner += `<div class="col-3">${itemName}</div>`;
+            });
+
+            movie.innerHTML = inner;
+
+        })
+        .catch(function (reason) {
+            movie.innerHTML = 'OOPS... Something went wrong...';
+            console.log('Error: ' + reason.status);
+        });
 }
 
 searchForm.addEventListener('submit', apiSearch);
 
 function requestApi(url) {
-    
-    const request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.responseType = 'json';
-    request.send();
 
-    // request.addEventListener('readystatechange', () => {
-    //     if (request.readyState !== 4) {
-    //         movie.innerHTML = 'Loading...';
-    //         return;
-    //     }
-        
-    //     if (request.status !== 200) {
-    //         movie.innerHTML = 'OOPS... Something went wrong...';
-    //         console.log('Error: ' + request.status);
-    //         return;
-    //     }
+    return new Promise(function (resolve, reject) {
+        const request = new XMLHttpRequest();
+        request.open('GET', url);
 
-    //     const output = request.response;
+        request.onload = () => {
+            if (request.status !== 200) {
+                reject({
+                    status: request.status
+                });
+                return;
+            }
 
-    //     let inner = '';
+            resolve(request.response);
+        };
 
-    //     output.results.forEach(function(item){
-    //         let itemName = item.name || item.title;
-    //         console.log(itemName);
-    //         inner += `<div class="col-3">${itemName}</div>`;
-    //     });
+        request.onerror = () => {
+            reject({
+                status: request.status
+            });
+        };
 
-    //     movie.innerHTML = inner;
-    // });
+        request.send();
 
-    request.onload =  () => {
-        
-        if (request.readyState !== 4) {
-            movie.innerHTML = 'Loading...';
-            return;
-        }
-        
-        if (request.status !== 200) {
-            movie.innerHTML = 'OOPS... Something went wrong...';
-            console.log('Error: ' + request.status);
-            return;
-        }
+    });
 
-        const output = request.response;
-
-        let inner = '';
-
-        output.results.forEach(function(item){
-            let itemName = item.name || item.title;
-            console.log(itemName);
-            inner += `<div class="col-3">${itemName}</div>`;
-        });
-
-        movie.innerHTML = inner;
-    };
 }
