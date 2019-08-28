@@ -7,21 +7,22 @@ function apiSearch(evt) {
     const server = 'https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText;
     movie.innerHTML = 'Loading...';
     requestApi(server)
-        .then(function (result) {
+        .then( result => {
             const output = JSON.parse(result);
             console.log(output);
 
             let inner = '';
 
-            output.results.forEach(function (item) {
+            // output.results.forEach(function (item) {
+            for (let item of output.results){
                 let itemName = item.name || item.title;
-                inner += `<div class="col-3">${itemName}</div>`;
-            });
+                inner += `<div class="col-12">${itemName}</div>`;
+            }
 
             movie.innerHTML = inner;
 
         })
-        .catch(function (reason) {
+        .catch( reason => {
             movie.innerHTML = 'OOPS... Something went wrong...';
             console.log('Error: ' + reason.status);
         });
