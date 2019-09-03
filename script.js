@@ -1,6 +1,6 @@
 const searchForm = document.querySelector('#search-form');
 const movie = document.querySelector('#movies');
-const urlPoster = 'https://image.tmdb.org/t/p/w185/';
+const urlPoster = 'https://image.tmdb.org/t/p/w500/';
 
 function apiSearch(evt) {
     evt.preventDefault();
@@ -77,12 +77,62 @@ function addEventMedia() {
 function showFullInfo(){
     let url = '';
     if(this.dataset.type === 'movie'){
-        url = 'кино';
+        url = 'https://api.themoviedb.org/3/movie/' + this.dataset.id + '?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru';
     } else if (this.dataset.type === 'tv'){
-        url = 'сериал';
+        url = 'https://api.themoviedb.org/3/tv/' + this.dataset.id + '?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru';
     } else {
         movie.innerHTML = '<h5 class="col-12 text-center text-danger">Произошла ошибка, повторите позже</h5>';
     }
+
+    fetch(url)
+        .then( 
+            response => {
+                console.log(response.status);
+                if (response.status !== 200) {
+                    return Promise.reject(new Error('from fetch: ' + response.status));
+                }
+                return response.json();
+            })
+        .then(
+            result => {
+                console.log(result);
+
+                let statusOutput = '';
+
+                if (result.status == 'Released') {
+                    statusOutput = 'в прокате';
+                } else if (result.status == 'Ended') {
+                    statusOutput = 'прокат завершён';
+                } else {
+                    statusOutput = 'неизвестен';
+                }
+
+                movie.innerHTML = `
+                    <h4 class="col-12 text-center text-info">${result.name || result.title}</h4>
+                    <div class="col-4">
+                        <img src='${urlPoster + result.poster_path}' alt='${result.name || result.title}'>
+                        ${(result.homepage) ? `<p class='text-center'> <a href="${result.homepage}" target="_blank"> Официальная страница</a></p>` : ''}
+                        ${(result.imdb_id) ? `<p class='text-center'> <a href="https://imdb.com/title/${result.imdb_id}" target="_blank"> Страница на IMDB.com</a></p>` : ''}
+                    </div>
+                    <div class="col-8">
+                        <p> Рейтинг: ${result.vote_average}</p>
+                        <p> Статус: ${statusOutput} </p>
+                        <p> Премьера: ${result.first_air_date || result.release_date}</p>
+
+                        ${(result.last_episode_to_air) ? `<p>${result.number_of_seasons} сезонов вышло. В последнем сезоне -  ${result.last_episode_to_air.episode_number} серий.  </p> ` : ''}
+
+                        <p> Описание: ${result.overview} </p>
+
+
+                    </div>
+                `;
+
+            })
+        .catch( 
+            reason => {
+                movie.innerHTML = 'OOPS... Something went wrong...';
+                console.log('Error in catch: ' + reason || reason.status);
+        });
 }
 
 document.addEventListener('DOMContentLoaded', function(){
