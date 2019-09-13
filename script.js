@@ -100,21 +100,22 @@ function showFullInfo(){
                 let statusOutput = '';
 
                 if (result.status == 'Released') {
-                    statusOutput = 'в прокате';
+                    statusOutput = 'В прокате';
                 } else if (result.status == 'Ended') {
-                    statusOutput = 'прокат завершён';
+                    statusOutput = 'Прокат завершён';
                 } else {
-                    statusOutput = 'неизвестен';
+                    statusOutput = 'Неизвестен';
                 }
 
                 movie.innerHTML = `
-                    <h4 class="col-12 text-center text-info">${result.name || result.title}</h4>
+                    
                     <div class="col-4">
                         <img src='${urlPoster + result.poster_path}' alt='${result.name || result.title}'>
                         ${(result.homepage) ? `<p class='text-center'> <a href="${result.homepage}" target="_blank"> Официальная страница</a></p>` : ''}
                         ${(result.imdb_id) ? `<p class='text-center'> <a href="https://imdb.com/title/${result.imdb_id}" target="_blank"> Страница на IMDB.com</a></p>` : ''}
                     </div>
                     <div class="col-8">
+                        <h4 class="text-info">${result.name || result.title}</h4>
                         <p> Рейтинг: ${result.vote_average}</p>
                         <p> Статус: ${statusOutput} </p>
                         <p> Премьера: ${result.first_air_date || result.release_date}</p>
