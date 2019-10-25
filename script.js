@@ -10,10 +10,10 @@ function apiSearch(evt) {
         movie.innerHTML = '<h5 class="col-12 text-center text-danger">Поле поиска не должно быть пустым</h5>';
         return;
     }
-    // const server = 'https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText;
+    // const server = 'https://api.themoviedb.org/3/search/multi?api_key=&language=ru&query=' + searchText;
     movie.innerHTML = '<div class="spinner"></div>';
 
-    fetch('https://api.themoviedb.org/3/search/multi?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru&query=' + searchText)
+    fetch('https://api.themoviedb.org/3/search/multi?api_key=xxx&language=ru&query=' + searchText)
         .then( 
             response => {
                 console.log(response.status);
@@ -77,9 +77,9 @@ function addEventMedia() {
 function showFullInfo(){
     let url = '';
     if(this.dataset.type === 'movie'){
-        url = 'https://api.themoviedb.org/3/movie/' + this.dataset.id + '?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru';
+        url = 'https://api.themoviedb.org/3/movie/' + this.dataset.id + '?api_key=xxx&language=ru';
     } else if (this.dataset.type === 'tv'){
-        url = 'https://api.themoviedb.org/3/tv/' + this.dataset.id + '?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru';
+        url = 'https://api.themoviedb.org/3/tv/' + this.dataset.id + '?api_key=xxx&language=ru';
     } else {
         movie.innerHTML = '<h5 class="col-12 text-center text-danger">Произошла ошибка, повторите позже</h5>';
     }
@@ -144,7 +144,7 @@ function showFullInfo(){
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    fetch('https://api.themoviedb.org/3/trending/all/week?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru')
+    fetch('https://api.themoviedb.org/3/trending/all/week?api_key=xxx&language=ru')
         .then( 
             response => {
                 console.log('response.status:' +response.status);
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function(){
 function getVideo(type, id) {
     let youtube = movie.querySelector('.youtube');
 
-    fetch(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=618653b3a45b6be44c46f38f077a1d0b&language=ru`)
+    fetch(`https://api.themoviedb.org/3/${type}/${id}/videos?api_key=xxx&language=ru`)
         .then( 
             response => {
                 if (response.status !== 200) {
